@@ -1,4 +1,4 @@
-import { useState, Fragment, useRef, ReactElement, useEffect } from "react";
+import { useState, Fragment, useRef, ReactElement } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { AddEventType } from "../../Types";
 
