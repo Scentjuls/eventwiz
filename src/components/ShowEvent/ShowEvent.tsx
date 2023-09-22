@@ -22,7 +22,7 @@ export const ShowEvent = (props: ShowEventProps): ReactElement => {
     <>
       <button
         onClick={handleShow}
-        className="mx-auto block m-2 bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+        className="btn mx-auto block m-2 bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
       >
         Show
       </button>
@@ -57,20 +57,41 @@ export const ShowEvent = (props: ShowEventProps): ReactElement => {
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel className="p-5 relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                  <h2>Event Details</h2>
+                  <h2 className="text-base font-extrabold leading-6 text-gray-900 text-3xl pb-3">
+                    Event Details
+                  </h2>
                   <div className="text-center space-y-2 sm:text-left">
                     <div className="space-y-0.5">
-                      <p className="text-lg text-black font-semibold">{name}</p>
-                      <p className="text-slate-500 font-medium">
-                        {day}/{time}
+                      <p className="pb-3">
+                        <span className="font-black">Name:</span>
+                        <span className="text-slate-500 font-medium pl-2">
+                          {name}
+                        </span>
                       </p>
-                      <p className="text-slate-500 font-medium">
-                        {description}
+                      <p className="pb-3">
+                        <span className="font-black">Day/Time:</span>
+                        <span className="text-slate-500 font-medium pl-2">
+                          {day}/{time}
+                        </span>
                       </p>
-                      <p className="text-lg text-black font-semibold">
-                        {availability ? "True" : "False"}
+                      <p className="pb-3">
+                        <span className="font-black">Description:</span>
+                        <span className="text-slate-500 font-medium pl-2">
+                          {description}
+                        </span>
                       </p>
-                      <p className="text-slate-500 font-medium">{location}</p>
+                      <p className="pb-3">
+                        <span className="font-black">Availability:</span>
+                        <span className="text-slate-500 font-medium pl-2">
+                          {availability ? "Yes" : "No"}
+                        </span>
+                      </p>
+                      <p className="pb-3">
+                        <span className="font-black">Location:</span>
+                        <span className="text-slate-500 font-medium pl-2">
+                          {location}
+                        </span>
+                      </p>
                     </div>
                     <div>
                       <button

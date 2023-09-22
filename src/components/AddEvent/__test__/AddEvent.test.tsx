@@ -50,18 +50,17 @@ describe("AddEvent", () => {
     // Fill the form
     const nameInput = screen.getByLabelText("Name");
     const locationInput = screen.getByLabelText("Location");
-    const timeInput = screen.getByLabelText("Time");
+    const toTimeInput = screen.getByLabelText("To");
+    const fromTimeInput = screen.getByLabelText("From");
     const dayInput = screen.getByLabelText("Day");
     const descriptionInput = screen.getByLabelText("Description");
     const availabilityCheckbox = screen.getByLabelText("Availability");
 
     fireEvent.change(nameInput, { target: { value: "Test Event" } });
     fireEvent.change(locationInput, { target: { value: "Test Location" } });
-    fireEvent.change(timeInput, { target: { value: "12pm to 4pm" } });
-
-    // Use a date format that matches the one in your component
-    fireEvent.change(dayInput, { target: { value: "Saturday 12th March" } });
-
+    fireEvent.change(dayInput, { target: { value: "2023-03-12" } });
+    fireEvent.change(fromTimeInput, { target: { value: "12:00" } });
+    fireEvent.change(toTimeInput, { target: { value: "16:00" } });
     fireEvent.change(descriptionInput, {
       target: { value: "Test Description" },
     });
@@ -75,8 +74,8 @@ describe("AddEvent", () => {
     expect(mockNewEvent).toHaveBeenCalledWith({
       name: "Test Event",
       location: "Test Location",
-      time: "12pm to 4pm",
-      day: "Saturday 12th March",
+      time: "12:00 PM to 4:00 PM",
+      day: "Sunday 12th March",
       description: "Test Description",
       availability: true,
     });

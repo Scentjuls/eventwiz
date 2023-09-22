@@ -123,7 +123,9 @@ export const AddEvent = (props: AddEventProps): ReactElement => {
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel className="p-5 relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                  <h3 className="font-bold">Add Event</h3>
+                  <h3 className="text-base font-extrabold leading-6 text-gray-900 text-3xl pb-5">
+                    Add Event
+                  </h3>
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -279,7 +281,7 @@ export const AddEvent = (props: AddEventProps): ReactElement => {
                         Close
                       </button>
                       <button
-                        className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                        className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ml-4"
                         form="eventModal"
                         type="submit"
                       >

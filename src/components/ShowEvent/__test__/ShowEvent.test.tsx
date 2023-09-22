@@ -28,7 +28,7 @@ describe("ShowEvent", () => {
       screen.getByText("Monday 13th December/4pm to 7pm")
     ).toBeInTheDocument();
     expect(screen.getByText("Event Description")).toBeInTheDocument();
-    expect(screen.getByText("True")).toBeInTheDocument();
+    expect(screen.getByText("Yes")).toBeInTheDocument();
     expect(screen.getByText("Event Location")).toBeInTheDocument();
   });
 

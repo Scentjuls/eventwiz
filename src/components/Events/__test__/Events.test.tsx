@@ -103,14 +103,16 @@ describe("Events", () => {
     // Fill the form
     const nameInput = screen.getByLabelText("Name");
     const locationInput = screen.getByLabelText("Location");
-    const timeInput = screen.getByLabelText("Time");
+    const toTimeInput = screen.getByLabelText("To");
+    const fromTimeInput = screen.getByLabelText("From");
     const dayInput = screen.getByLabelText("Day");
     const descriptionInput = screen.getByLabelText("Description");
     const availabilityCheckbox = screen.getByLabelText("Availability");
 
     fireEvent.change(nameInput, { target: { value: "New Event" } });
     fireEvent.change(locationInput, { target: { value: "New Location" } });
-    fireEvent.change(timeInput, { target: { value: "12:00" } });
+    fireEvent.change(fromTimeInput, { target: { value: "12:00" } });
+    fireEvent.change(toTimeInput, { target: { value: "16:00" } });
     fireEvent.change(dayInput, { target: { value: "New Day" } });
     fireEvent.change(descriptionInput, {
       target: { value: "New Description" },
