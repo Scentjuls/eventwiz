@@ -14,6 +14,7 @@ export const Events = (): ReactElement => {
   const [allEvents, setAllEvents] = useState<EventType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isUpdateNeeded, setIsUpdateNeeded] = useState<boolean>(true);
 
   const navigate = useNavigate();
   const { showAlertAvailable } = useAlertBar();
@@ -49,45 +50,14 @@ export const Events = (): ReactElement => {
       });
   };
 
-  useEffect(() => {
-    const url: string = `${baseUrl}`;
-    fetch(url)
-      .then((response) => {
-        if (response.status === 404) {
-          throw new Error("Not Found");
-        }
-        if (!response.ok) {
-          throw new Error("There is a network error");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setAllEvents(data);
-        const startIndex: number = (currentPage - 1) * eventsPerPage;
-        const endIndex: number = startIndex + eventsPerPage;
-        const eventData: EventType[] = data.slice(startIndex, endIndex);
-        setEvents(eventData);
-        setLoading(false);
-      })
-      .catch((error) => {
-        if (error.message === "Not Found") {
-          navigate("/404");
-        } else {
-          console.error("Error", error);
-          setLoading(false);
-        }
-      });
-  }, [setEvents, navigate, currentPage]);
-
   const updateEvent = (data: EventType, id: string): void => {
     const url: string = `${baseUrl}${id}`;
-    const updatedData: EventType = { ...data, name: data.name };
     fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedData),
+      body: JSON.stringify(data),
       redirect: "follow",
     })
       .then((response) => {
@@ -104,10 +74,11 @@ export const Events = (): ReactElement => {
 
         if (eventIndex !== -1) {
           const updatedEvents = [...events];
-          updatedEvents[eventIndex] = updatedData;
+          updatedEvents[eventIndex] = data;
           setEvents(updatedEvents);
         }
         showAlertAvailable("success", "Event has been updated");
+        setIsUpdateNeeded(true);
       })
       .catch((error) => {
         showAlertAvailable("error", error);
@@ -140,6 +111,7 @@ export const Events = (): ReactElement => {
         const updatedEvents = events.filter((event) => event._id !== id);
         setEvents(updatedEvents);
         showAlertAvailable("success", "The event has been deleted");
+        setIsUpdateNeeded(true);
       })
       .catch((error) => {
         showAlertAvailable("error", error);
@@ -152,6 +124,40 @@ export const Events = (): ReactElement => {
   const handlePageChange = (page: number): void => {
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    console.log("here", isUpdateNeeded);
+    if (isUpdateNeeded) {
+      const url: string = `${baseUrl}`;
+      fetch(url)
+        .then((response) => {
+          if (response.status === 404) {
+            throw new Error("Not Found");
+          }
+          if (!response.ok) {
+            throw new Error("There is a network error");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setAllEvents(data);
+          const startIndex: number = (currentPage - 1) * eventsPerPage;
+          const endIndex: number = startIndex + eventsPerPage;
+          const eventData: EventType[] = data.slice(startIndex, endIndex);
+          setEvents(eventData);
+          setLoading(false);
+          setIsUpdateNeeded(false);
+        })
+        .catch((error) => {
+          if (error.message === "Not Found") {
+            navigate("/404");
+          } else {
+            console.error("Error", error);
+            setLoading(false);
+          }
+        });
+    }
+  }, [setEvents, navigate, currentPage, isUpdateNeeded]);
 
   return (
     <div className="max-w-7l min-h-screen p-3">
@@ -174,6 +180,7 @@ export const Events = (): ReactElement => {
                       location={event.location}
                       id={event._id}
                       updateEvent={updateEvent}
+                      key={`edit_${event._id}`}
                     />
                   );
 
@@ -181,11 +188,12 @@ export const Events = (): ReactElement => {
                     <DeleteEvent
                       onDelete={() => deleteHandler(event._id)}
                       id={event._id}
+                      key={`delete_${event._id}`}
                     />
                   );
                   return (
                     <Event
-                      key={event._id}
+                      key={`event_${event._id}`}
                       name={event.name}
                       availability={event.availability}
                       day={event.day}
