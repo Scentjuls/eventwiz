@@ -5,6 +5,12 @@ import { DeleteEvent } from "../DeleteEvent";
 // Mock the onDelete function
 const mockDelete = jest.fn();
 
+const deleteButton = () => {
+  // Find the "Delete" button and click it
+  const deleteButton = screen.getByTestId(`delete-btn-${eventId}`);
+  fireEvent.click(deleteButton);
+};
+
 const eventId = "event123";
 
 describe("DeleteEvent", () => {
@@ -17,8 +23,7 @@ describe("DeleteEvent", () => {
   it("should open the confirmation dialog when the Delete button is clicked", () => {
     render(<DeleteEvent onDelete={mockDelete} id={eventId} />);
 
-    const deleteButton = screen.getByTestId(`delete-btn-${eventId}`);
-    fireEvent.click(deleteButton);
+    deleteButton();
 
     // Assert that the confirmation dialog is displayed
     const confirmationDialog = screen.getByRole("heading", {
@@ -30,8 +35,7 @@ describe("DeleteEvent", () => {
   it("should call the onDelete function once when the Delete Event button in the dialog is clicked", () => {
     render(<DeleteEvent onDelete={mockDelete} id={eventId} />);
 
-    const deleteButton = screen.getByTestId(`delete-btn-${eventId}`);
-    fireEvent.click(deleteButton);
+    deleteButton();
 
     const deleteEventButton = screen.getByRole("button", {
       name: "Delete Event",
@@ -44,8 +48,7 @@ describe("DeleteEvent", () => {
   it("should close the dialog when the Cancel button in the dialog is clicked", () => {
     render(<DeleteEvent onDelete={mockDelete} id={eventId} />);
 
-    const deleteButton = screen.getByTestId(`delete-btn-${eventId}`);
-    fireEvent.click(deleteButton);
+    deleteButton();
 
     const cancelButton = screen.getByText("Cancel");
     fireEvent.click(cancelButton);

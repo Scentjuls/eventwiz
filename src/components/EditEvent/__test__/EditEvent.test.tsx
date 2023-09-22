@@ -15,6 +15,12 @@ const mockProps = {
   updateEvent: mockUpdateEvent,
 };
 
+const getEditButton = () => {
+  // Find the edit button and click
+  const editButton = screen.getByText("Edit");
+  fireEvent.click(editButton);
+};
+
 describe("EditEvent", () => {
   it("should render without any errors", () => {
     render(<EditEvent {...mockProps} />);
@@ -22,8 +28,8 @@ describe("EditEvent", () => {
 
   it("should open the edit dialog when the 'Edit' button is clicked", () => {
     render(<EditEvent {...mockProps} />);
-    const editButton = screen.getByText("Edit");
-    fireEvent.click(editButton);
+
+    getEditButton();
 
     //show edit dialog title
     const editDialogTitle = screen.getByRole("heading", { name: "Edit Event" });
@@ -36,8 +42,7 @@ describe("EditEvent", () => {
   it("should call the updateEvent function with the correct data when the form is submitted", () => {
     render(<EditEvent {...mockProps} />);
 
-    const editButton = screen.getByText("Edit");
-    fireEvent.click(editButton);
+    getEditButton();
 
     const nameInput = screen.getByLabelText("Name");
     fireEvent.change(nameInput, { target: { value: "Updated Test Event" } });
@@ -61,8 +66,7 @@ describe("EditEvent", () => {
   it("should close the edit dialog when the 'Close' button is clicked", () => {
     render(<EditEvent {...mockProps} />);
 
-    const editButton = screen.getByText("Edit");
-    fireEvent.click(editButton);
+    getEditButton();
 
     const closeButton = screen.getByText("Close");
     fireEvent.click(closeButton);

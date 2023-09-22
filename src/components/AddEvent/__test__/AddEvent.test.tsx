@@ -4,6 +4,12 @@ import { AddEvent } from "../AddEvent";
 
 const mockNewEvent = jest.fn();
 
+const addButton = () => {
+  // Find the "Add an Event" button and click it
+  const addButtonElement = screen.getByText(/Add an Event/i);
+  fireEvent.click(addButtonElement);
+};
+
 describe("AddEvent", () => {
   it("should render without crashing", () => {
     render(<AddEvent newEvent={mockNewEvent} />);
@@ -16,9 +22,7 @@ describe("AddEvent", () => {
   it("should open the modal when the 'Add an Event' button is clicked", () => {
     render(<AddEvent newEvent={mockNewEvent} />);
 
-    // Find the "Add an Event" button and click it
-    const addButtonElement = screen.getByText(/Add an Event/i);
-    fireEvent.click(addButtonElement);
+    addButton();
 
     // Check that the dialog is in the document
     const dialogElement = screen.queryByRole("dialog");
@@ -28,9 +32,7 @@ describe("AddEvent", () => {
   it("should close the modal when the 'Close' button is clicked", () => {
     render(<AddEvent newEvent={mockNewEvent} />);
 
-    // Find the "Add an Event" button and click it
-    const addButtonElement = screen.getByText(/Add an Event/i);
-    fireEvent.click(addButtonElement);
+    addButton();
 
     // Find the "Close" button and click it
     const closeButton = screen.getByText("Close");
@@ -43,9 +45,7 @@ describe("AddEvent", () => {
 
   it("should call newEvent with the form data when the 'Add' button in the dialog is clicked", () => {
     render(<AddEvent newEvent={mockNewEvent} />);
-    // Find the "Add an Event" button and click it
-    const addButtonElement = screen.getByText(/Add an Event/i);
-    fireEvent.click(addButtonElement);
+    addButton();
 
     // Fill the form
     const nameInput = screen.getByLabelText("Name");
@@ -57,8 +57,11 @@ describe("AddEvent", () => {
 
     fireEvent.change(nameInput, { target: { value: "Test Event" } });
     fireEvent.change(locationInput, { target: { value: "Test Location" } });
-    fireEvent.change(timeInput, { target: { value: "12:00" } });
-    fireEvent.change(dayInput, { target: { value: "Test Day" } });
+    fireEvent.change(timeInput, { target: { value: "12pm to 4pm" } });
+
+    // Use a date format that matches the one in your component
+    fireEvent.change(dayInput, { target: { value: "Saturday 12th March" } });
+
     fireEvent.change(descriptionInput, {
       target: { value: "Test Description" },
     });
@@ -68,12 +71,12 @@ describe("AddEvent", () => {
     const submitButtonElement = screen.getByText("Add");
     fireEvent.click(submitButtonElement);
 
-    //Check if newEvent was called with the right data
+    // Check if newEvent was called with the right data
     expect(mockNewEvent).toHaveBeenCalledWith({
       name: "Test Event",
       location: "Test Location",
-      time: "12:00",
-      day: "Test Day",
+      time: "12pm to 4pm",
+      day: "Saturday 12th March",
       description: "Test Description",
       availability: true,
     });

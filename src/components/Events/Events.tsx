@@ -34,7 +34,7 @@ export const Events = (): ReactElement => {
       })
       .then((data) => {
         const newState = { ...data };
-        setEvents([...events, newState]);
+        setEvents([newState, ...events]);
         showAlertAvailable("success", "A new event has been added");
       })
       .catch((error) => {

@@ -13,7 +13,8 @@ export const AddEvent = (props: AddEventProps): ReactElement => {
   const [show, setShow] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [location, setLocation] = useState<string>("");
-  const [time, setTime] = useState<string>("");
+  const [fromTime, setFromTime] = useState<string>("");
+  const [toTime, setToTime] = useState<string>("");
   const [day, setDay] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [availability, setAvailability] = useState<boolean>(false);
@@ -26,21 +27,57 @@ export const AddEvent = (props: AddEventProps): ReactElement => {
     setAvailability(!availability);
   };
 
+  function convertTime(time24: string): string {
+    const [hours, minutes] = time24.split(":");
+    let period = "AM";
+
+    // Convert the hours to an integer
+    let hoursInt = parseInt(hours);
+
+    // Determining either AM or PM
+    if (hoursInt >= 12) {
+      period = "PM";
+      if (hoursInt > 12) {
+        hoursInt -= 12;
+      }
+    }
+
+    // Create the 12-hour formatted time string
+    const time12 = `${hoursInt}:${minutes} ${period}`;
+
+    return time12;
+  }
+
   const handleSubmit = (): void => {
-    const date = moment(day);
-    const formattedDate: string = date.format("dddd Do MMMM");
+    // Parse the date input value in "yyyy-MM-dd" format
+    const dateParts: string[] = day.split("-");
+    const year = Number(dateParts[0]);
+    const month = Number(dateParts[1]);
+    const dayOfMonth = Number(dateParts[2]);
+
+    // Create a new Date object with the parsed date parts
+    const date = new Date(year, month - 1, dayOfMonth);
+
+    // Format the date using moment
+    const formattedDate: string = moment(date).format("dddd Do MMMM");
+
+    // Format the time string
+    const formattedTime: string = `${convertTime(fromTime)} to ${convertTime(
+      toTime
+    )}`;
 
     newEvent({
       name,
       location,
-      time,
+      time: formattedTime,
       day: formattedDate,
       description,
       availability,
     });
     setName("");
     setLocation("");
-    setTime("");
+    setFromTime("");
+    setToTime("");
     setDay("");
     setDescription("");
     setAvailability(false);
@@ -140,18 +177,36 @@ export const AddEvent = (props: AddEventProps): ReactElement => {
                       <div className="md:w-1/3">
                         <label
                           className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          htmlFor="time"
+                          htmlFor="fromTime"
                         >
-                          Time
+                          From
                         </label>
                       </div>
                       <div className="md:w-2/3">
                         <input
                           className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                          id="time"
+                          id="fromTime"
                           type="time"
-                          value={time}
-                          onChange={(e) => setTime(e.target.value)}
+                          value={fromTime}
+                          onChange={(e) => setFromTime(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="md:w-1/3">
+                        <label
+                          className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                          htmlFor="toTime"
+                        >
+                          To
+                        </label>
+                      </div>
+                      <div className="md:w-2/3">
+                        <input
+                          className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                          id="toTime"
+                          type="time"
+                          value={toTime}
+                          onChange={(e) => setToTime(e.target.value)}
                           required
                         />
                       </div>
