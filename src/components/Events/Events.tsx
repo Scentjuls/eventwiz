@@ -41,14 +41,49 @@ export const Events = (): ReactElement => {
       })
       .then((data) => {
         const newState = { ...data };
-        setEvents([newState, ...events]);
+        setEvents([...events, newState]);
         showAlertAvailable("success", "A new event has been added");
+        setIsUpdateNeeded(true);
       })
       .catch((error) => {
         showAlertAvailable("error", error);
         console.error("error from adding: ", error);
       });
   };
+
+  useEffect(() => {
+    if (isUpdateNeeded) {
+      const url: string = `${baseUrl}`;
+
+      fetch(url)
+        .then((response) => {
+          if (response.status === 404) {
+            throw new Error("Not Found");
+          }
+          if (!response.ok) {
+            throw new Error("There is a network error");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setAllEvents(data);
+          const startIndex: number = (currentPage - 1) * eventsPerPage;
+          const endIndex: number = startIndex + eventsPerPage;
+          const eventData: EventType[] = data.slice(startIndex, endIndex);
+          setEvents(eventData);
+          setLoading(false);
+          setIsUpdateNeeded(false);
+        })
+        .catch((error) => {
+          if (error.message === "Not Found") {
+            navigate("/404");
+          } else {
+            console.error("Error", error);
+            setLoading(false);
+          }
+        });
+    }
+  }, [setEvents, navigate, currentPage, isUpdateNeeded]);
 
   const updateEvent = (data: EventType, id: string): void => {
     const url: string = `${baseUrl}${id}`;
@@ -123,40 +158,8 @@ export const Events = (): ReactElement => {
 
   const handlePageChange = (page: number): void => {
     setCurrentPage(page);
+    setIsUpdateNeeded(true);
   };
-
-  useEffect(() => {
-    if (isUpdateNeeded) {
-      const url: string = `${baseUrl}`;
-      fetch(url)
-        .then((response) => {
-          if (response.status === 404) {
-            throw new Error("Not Found");
-          }
-          if (!response.ok) {
-            throw new Error("There is a network error");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setAllEvents(data);
-          const startIndex: number = (currentPage - 1) * eventsPerPage;
-          const endIndex: number = startIndex + eventsPerPage;
-          const eventData: EventType[] = data.slice(startIndex, endIndex);
-          setEvents(eventData);
-          setLoading(false);
-          setIsUpdateNeeded(false);
-        })
-        .catch((error) => {
-          if (error.message === "Not Found") {
-            navigate("/404");
-          } else {
-            console.error("Error", error);
-            setLoading(false);
-          }
-        });
-    }
-  }, [setEvents, navigate, currentPage, isUpdateNeeded]);
 
   return (
     <div className="max-w-7l min-h-screen p-3">
