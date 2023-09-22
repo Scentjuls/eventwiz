@@ -7,12 +7,18 @@ import { EditEvent } from "../EditEvent/EditEvent";
 import { useNavigate } from "react-router-dom";
 import { DeleteEvent } from "../DeleteEvent/DeleteEvent";
 import { useAlertBar } from "../../Contexts/AlertBarContext";
+import { Pagination } from "../Pagination/Pagination";
 
 export const Events = (): ReactElement => {
   const [events, setEvents] = useState<EventType[]>([]);
-  const navigate = useNavigate();
+  const [allEvents, setAllEvents] = useState<EventType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const navigate = useNavigate();
   const { showAlertAvailable } = useAlertBar();
+
+  const eventsPerPage: number = 10;
 
   const addEventHandler = (data: AddEventType): void => {
     const url: string = `${baseUrl}`;
@@ -56,7 +62,11 @@ export const Events = (): ReactElement => {
         return response.json();
       })
       .then((data) => {
-        setEvents(data);
+        setAllEvents(data);
+        const startIndex: number = (currentPage - 1) * eventsPerPage;
+        const endIndex: number = startIndex + eventsPerPage;
+        const eventData: EventType[] = data.slice(startIndex, endIndex);
+        setEvents(eventData);
         setLoading(false);
       })
       .catch((error) => {
@@ -67,7 +77,7 @@ export const Events = (): ReactElement => {
           setLoading(false);
         }
       });
-  }, [setEvents, navigate]);
+  }, [setEvents, navigate, currentPage]);
 
   const updateEvent = (data: EventType, id: string): void => {
     const url: string = `${baseUrl}${id}`;
@@ -137,6 +147,12 @@ export const Events = (): ReactElement => {
       });
   };
 
+  const totalPages: number = Math.ceil(allEvents.length / eventsPerPage);
+
+  const handlePageChange = (page: number): void => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="max-w-7l min-h-screen p-3">
       <AddEvent newEvent={addEventHandler} />
@@ -186,6 +202,11 @@ export const Events = (): ReactElement => {
           )}
         </div>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
