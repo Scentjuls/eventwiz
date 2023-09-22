@@ -158,7 +158,7 @@ export const Events = (): ReactElement => {
       <AddEvent newEvent={addEventHandler} />
       <div>
         <div>
-          {loading ? ( // Display "Loading" while data is being fetched
+          {loading ? ( // Display "Loading..." text while data is being fetched
             <p className="text-5xl font-bold text-center">Loading...</p>
           ) : events.length > 0 ? (
             <>

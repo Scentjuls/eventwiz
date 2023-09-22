@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { AddEventType } from "../../Types";
 import moment from "moment";
 import "./AddEvent.css";
+import { Button } from "../Button/Button";
 
 type AddEventProps = {
   newEvent: (data: AddEventType) => void;
@@ -86,12 +87,14 @@ export const AddEvent = (props: AddEventProps): ReactElement => {
 
   return (
     <>
-      <button
-        onClick={handleShow}
-        className="mx-auto block m-2 btn-background-purple hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-      >
-        Add an Event
-      </button>
+      <div className="flex ">
+        <Button
+          name="Add an Event"
+          handleClick={handleShow}
+          buttonClass="normal"
+          buttonType="button"
+        />
+      </div>
       <Transition.Root show={show} as={Fragment}>
         <Dialog
           as="div"
@@ -272,21 +275,22 @@ export const AddEvent = (props: AddEventProps): ReactElement => {
                         />
                       </div>
                     </div>
-                    <div>
-                      <button
-                        onClick={handleClose}
-                        className="shadow bg-slate-500 hover:bg-slate-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                        type="button"
-                      >
-                        Close
-                      </button>
-                      <button
-                        className="shadow btn-background-purple hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ml-4"
-                        form="eventModal"
-                        type="submit"
-                      >
-                        Add
-                      </button>
+                    <div className="flex">
+                      <Button
+                        name="Close"
+                        handleClick={handleClose}
+                        buttonClass="close"
+                        buttonType="button"
+                      />
+                      <div className="ml-4">
+                        <Button
+                          name="Add"
+                          handleClick={handleShow}
+                          buttonClass="normal"
+                          buttonType="submit"
+                          form="eventModal"
+                        />
+                      </div>
                     </div>
                   </form>
                 </Dialog.Panel>

@@ -1,6 +1,7 @@
 import { useState, Fragment, useRef, ReactElement } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { AddEventType } from "../../Types";
+import { Button } from "../Button/Button";
 
 type EditEventProps = {
   name: string;
@@ -202,21 +203,22 @@ export const EditEvent = (props: EditEventProps): ReactElement => {
                         />
                       </div>
                     </div>
-                    <div>
-                      <button
-                        onClick={handleClose}
-                        className="shadow bg-slate-500 hover:bg-slate-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                        type="button"
-                      >
-                        Close
-                      </button>
-                      <button
-                        className="shadow btn-background-purple hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ml-4"
-                        form="editEventModal"
-                        type="submit"
-                      >
-                        Edit an Event
-                      </button>
+                    <div className="flex">
+                      <Button
+                        name="Close"
+                        handleClick={handleClose}
+                        buttonClass="close"
+                        buttonType="button"
+                      />
+                      <div className="ml-4">
+                        <Button
+                          name="Edit an Event"
+                          handleClick={handleShow}
+                          buttonClass="normal"
+                          buttonType="submit"
+                          form="editEventModal"
+                        />
+                      </div>
                     </div>
                   </form>
                 </Dialog.Panel>

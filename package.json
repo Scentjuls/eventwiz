@@ -2,6 +2,7 @@
   "name": "eventwiz",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/",
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
@@ -12,6 +13,7 @@
     "@types/node": "^16.18.53",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
+    "classnames": "^2.3.2",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

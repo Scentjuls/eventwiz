@@ -1,6 +1,7 @@
 import { Fragment, useRef, useState, ReactElement } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { Button } from "../Button/Button";
 
 type DeleteProps = {
   onDelete(): void;
@@ -22,13 +23,14 @@ export const DeleteEvent = (props: DeleteProps): ReactElement => {
 
   return (
     <>
-      <button
-        onClick={handleShow}
-        data-testid={`delete-btn-${id}`}
-        className="mx-auto block m-2 bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-      >
-        Delete
-      </button>
+      <Button
+        name="Delete"
+        handleClick={handleShow}
+        buttonClass="delete"
+        buttonType="button"
+        testId={id}
+      />
+
       <Transition.Root show={show} as={Fragment}>
         <Dialog
           as="div"
@@ -111,8 +113,3 @@ export const DeleteEvent = (props: DeleteProps): ReactElement => {
     </>
   );
 };
-
-//test that if i pass a function the onclick willl call the function
-// render the delete component pass the function
-//   fire a clicl event on the<button></button >
-// test that the function was called once

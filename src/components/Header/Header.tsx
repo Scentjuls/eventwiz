@@ -42,12 +42,11 @@ export const Header = (): ReactElement => {
             <Disclosure.Panel className="sm:hidden">
               <div className="space-y-1 px-2 pb-3 pt-2">
                 <Disclosure.Button
-                  as="a"
-                  href="/"
+                  as="div"
                   className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
                   aria-current="page"
                 >
-                  Events
+                  <NavLink to="/">Events</NavLink>
                 </Disclosure.Button>
               </div>
             </Disclosure.Panel>
