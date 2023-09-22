@@ -1,3 +1,11 @@
 .btn {
     width: 82px;
 }
+
+.btn-background-purple {
+    background-color: #790BE0;
+}
+
+.btn-background-red {
+    background-color: #B21010;
+}

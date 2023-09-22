@@ -161,52 +161,56 @@ export const Events = (): ReactElement => {
           {loading ? ( // Display "Loading" while data is being fetched
             <p className="text-5xl font-bold text-center">Loading...</p>
           ) : events.length > 0 ? (
-            <div className="flex flex-wrap justify-center">
-              {events.map((event: EventType) => {
-                const editEvent = (
-                  <EditEvent
-                    name={event.name}
-                    availability={event.availability}
-                    day={event.day}
-                    description={event.description}
-                    time={event.time}
-                    location={event.location}
-                    id={event._id}
-                    updateEvent={updateEvent}
-                  />
-                );
+            <>
+              <div className="flex flex-wrap justify-center">
+                {events.map((event: EventType) => {
+                  const editEvent = (
+                    <EditEvent
+                      name={event.name}
+                      availability={event.availability}
+                      day={event.day}
+                      description={event.description}
+                      time={event.time}
+                      location={event.location}
+                      id={event._id}
+                      updateEvent={updateEvent}
+                    />
+                  );
 
-                const deleteEvent = (
-                  <DeleteEvent
-                    onDelete={() => deleteHandler(event._id)}
-                    id={event._id}
-                  />
-                );
-                return (
-                  <Event
-                    key={event._id}
-                    name={event.name}
-                    availability={event.availability}
-                    day={event.day}
-                    description={event.description}
-                    time={event.time}
-                    location={event.location}
-                    editEvent={editEvent}
-                    deleteEvent={deleteEvent}
-                  />
-                );
-              })}
-            </div>
+                  const deleteEvent = (
+                    <DeleteEvent
+                      onDelete={() => deleteHandler(event._id)}
+                      id={event._id}
+                    />
+                  );
+                  return (
+                    <Event
+                      key={event._id}
+                      name={event.name}
+                      availability={event.availability}
+                      day={event.day}
+                      description={event.description}
+                      time={event.time}
+                      location={event.location}
+                      editEvent={editEvent}
+                      deleteEvent={deleteEvent}
+                    />
+                  );
+                })}
+              </div>
+              <div>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            </>
           ) : (
             <div data-testid="no-events">There are no events</div>
           )}
         </div>
       </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
     </div>
   );
 };

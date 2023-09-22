@@ -88,7 +88,7 @@ export const AddEvent = (props: AddEventProps): ReactElement => {
     <>
       <button
         onClick={handleShow}
-        className="mx-auto block m-2 bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+        className="mx-auto block m-2 btn-background-purple hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
       >
         Add an Event
       </button>
@@ -281,7 +281,7 @@ export const AddEvent = (props: AddEventProps): ReactElement => {
                         Close
                       </button>
                       <button
-                        className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ml-4"
+                        className="shadow btn-background-purple hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ml-4"
                         form="eventModal"
                         type="submit"
                       >
