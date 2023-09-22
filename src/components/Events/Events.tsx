@@ -39,7 +39,7 @@ export const Events = (): ReactElement => {
       })
       .catch((error) => {
         showAlertAvailable("error", error);
-        console.log("error from adding: ", error);
+        console.error("error from adding: ", error);
       });
   };
 
@@ -47,6 +47,9 @@ export const Events = (): ReactElement => {
     const url: string = `${baseUrl}`;
     fetch(url)
       .then((response) => {
+        if (response.status === 404) {
+          throw new Error("Not Found");
+        }
         if (!response.ok) {
           throw new Error("There is a network error");
         }
@@ -57,10 +60,14 @@ export const Events = (): ReactElement => {
         setLoading(false);
       })
       .catch((error) => {
-        // Handling error and set loading to false
-        setLoading(false);
+        if (error.message === "Not Found") {
+          navigate("/404");
+        } else {
+          console.error("Error", error);
+          setLoading(false);
+        }
       });
-  }, [setEvents]);
+  }, [setEvents, navigate]);
 
   const updateEvent = (data: EventType, id: string): void => {
     const url: string = `${baseUrl}${id}`;
@@ -94,7 +101,7 @@ export const Events = (): ReactElement => {
       })
       .catch((error) => {
         showAlertAvailable("error", error);
-        console.log("error from updating the event: ", error);
+        console.error("error from updating the event: ", error);
       });
   };
 

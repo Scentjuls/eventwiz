@@ -1,5 +1,4 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import React from "react";
 import { Events } from "../Events";
 import { MemoryRouter } from "react-router-dom"; // Use MemoryRouter for testing navigation
 import { rest } from "msw";
@@ -8,7 +7,7 @@ import { setupServer } from "msw/node";
 const server = setupServer(
   rest.get(
     "https://crudcrud.com/api/f0a4d5a62d1041c6924c714da96ab9a3/data/",
-    (request, response, context) => {
+    (_request, response, context) => {
       // Return mock data
       return response(
         context.status(200),
@@ -32,6 +31,19 @@ const server = setupServer(
             location: "Location 12",
           },
         ])
+      );
+    }
+  ),
+  rest.post(
+    "https://crudcrud.com/api/f0a4d5a62d1041c6924c714da96ab9a3/data/",
+    (request, response, context) => {
+      // Return a mock response for the POST request
+      return response(
+        context.status(201),
+        context.json({
+          _id: "2",
+          ...request.json(),
+        })
       );
     }
   )
@@ -65,7 +77,7 @@ describe("Events", () => {
     server.use(
       rest.get(
         "https://crudcrud.com/api/f0a4d5a62d1041c6924c714da96ab9a3/data/",
-        (request, response, context) => {
+        (_request, response, context) => {
           return response(context.status(200), context.json([]));
         }
       )
@@ -80,20 +92,6 @@ describe("Events", () => {
   });
 
   it("should add a new event when the 'Add an Event' button is clicked", async () => {
-    // Create a successful Mock request
-    //check this post url
-    server.use(
-      rest.post("http://localhost", (request, response, context) => {
-        return response(
-          context.status(201),
-          context.json({
-            _id: "2",
-            ...request.json(),
-          })
-        );
-      })
-    );
-
     render(<Events />, { wrapper: MemoryRouter });
 
     // Find the "Add an Event" button and click it
@@ -113,7 +111,7 @@ describe("Events", () => {
     fireEvent.change(locationInput, { target: { value: "New Location" } });
     fireEvent.change(fromTimeInput, { target: { value: "12:00" } });
     fireEvent.change(toTimeInput, { target: { value: "16:00" } });
-    fireEvent.change(dayInput, { target: { value: "New Day" } });
+    fireEvent.change(dayInput, { target: { value: "Saturday 12th November" } });
     fireEvent.change(descriptionInput, {
       target: { value: "New Description" },
     });
@@ -122,6 +120,27 @@ describe("Events", () => {
     // Submit
     const submitButtonElement = screen.getByText("Add");
     fireEvent.click(submitButtonElement);
+
+    // Create a successful Mock request
+    server.use(
+      rest.post(
+        "https://crudcrud.com/api/f0a4d5a62d1041c6924c714da96ab9a3/data/",
+        (_request, response, context) => {
+          return response(
+            context.status(200),
+            context.json({
+              _id: "2",
+              name: "New Event",
+              availability: true,
+              day: "Saturday 12th November",
+              description: "New Description",
+              time: "12pm to 4pm",
+              location: "New Location 1",
+            })
+          );
+        }
+      )
+    );
 
     // Wait for the new event to be added
     await waitFor(() => {
@@ -134,7 +153,7 @@ describe("Events", () => {
     server.use(
       rest.delete(
         "https://crudcrud.com/api/f0a4d5a62d1041c6924c714da96ab9a3/data/:dataId",
-        (request, response, context) => {
+        (_request, response, context) => {
           return response(context.status(204));
         }
       )

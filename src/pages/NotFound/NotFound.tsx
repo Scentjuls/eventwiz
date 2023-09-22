@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import errorImage from "../../assets/error.jpeg";
 
@@ -18,7 +17,11 @@ export const NotFound = () => {
           >
             Go Back
           </button>
-          <img src={errorImage} alt="404 Error" className="m-auto" />
+          <img
+            src={errorImage}
+            alt="404 Error with man kneeling in front of server"
+            className="m-auto"
+          />
         </div>
       </div>
     </>
