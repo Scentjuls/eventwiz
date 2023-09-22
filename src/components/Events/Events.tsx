@@ -115,7 +115,7 @@ export const Events = (): ReactElement => {
       })
       .catch((error) => {
         showAlertAvailable("error", error);
-        console.log("Error from deleting the event:", error);
+        console.error("Error from deleting the event:", error);
       });
   };
 
@@ -126,7 +126,6 @@ export const Events = (): ReactElement => {
   };
 
   useEffect(() => {
-    console.log("here", isUpdateNeeded);
     if (isUpdateNeeded) {
       const url: string = `${baseUrl}`;
       fetch(url)

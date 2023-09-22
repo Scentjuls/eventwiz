@@ -6,6 +6,28 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `Additional Features / Components Added`
+
+#### Error Boundary Component:
+
+This component was added to maintain a smooth user experience by gracefully handling runtime errors that might occur during the application's execution, it displays an error message to inform users that something unexpected happened. This enhances the overall reliability of the application and provides a better user experience.
+
+#### 404 Component:
+
+This Component is displayed when a user navigates to a URL that doesn't correspond to any existing routes or resources within the application.
+
+#### Pagination Component:
+
+To enhance the manageability of the events displayed within the application, I implemented a Pagination feature, to allow viewing the events in smaller, more manageable chunks, improving overall usability.
+
+#### Accessibility:
+
+I also made sure that the colors used meet the accessibility guidelines while also creating an aesthetically pleasing and user-friendly experience. The colors also pass the AAA conformance levels.
+
+#### Conditional Data Rendering:
+
+To further enhance the user experience, I implemented a feature that avoids rendering data when it's not available.
+
 ### `npm start`
 
 Runs the app in the development mode.\
